@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Isoru</title>
+</head>
+<body>
+	<canvas width="800" height="600" id="game_map"></canvas>
+	<script src="Isoru/isoru.js"></script>
+	<script>
+		var GAME = new Isoru('game_map', {
+			dirt: 'heightMap0.png',
+			buildingWland: 132,
+			buildingHland: 127,
+			buildingDEEPland: 26,
+			tileW: 132,
+			tileH: 99,
+			tilesDistance: 64,
+			startCameraX: 100,
+			startCameraY: 0
+		});
+
+		var map = [
+			[0,0,8,1,2],
+			[0,0,9,10,4],
+			[0,0,8,0,4],
+			[3,6,11,6,5],
+			[7,7,10,0,0]
+		];
+
+		var heightMap = [
+			[6,2,0,0,0],
+			[4,1,0,0,0],
+			[1,0,0,0,0],
+			[0,0,0,0,0],
+			[0,0,0,0,0]
+		];
+
+		GAME.initMap(map, [
+			"land.png", // 0
+			"buildings/building1.png", // 1
+			"water0_1.png", // 2
+			"water0_2.png", // 3
+			"water1_1.png", // 4
+			"water2_4.png", // 5
+			"water1_2.png", // 6
+
+			"road0_1.png", // 7
+			"road0_2.png", // 8
+			"road1_0.png", // 9
+			"road1_1.png", // 10
+			"road_bridge1.png" // 11
+		], heightMap);
+	</script>
+</body>
+</html>

@@ -3,54 +3,65 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Isoru</title>
+	<style>
+		canvas {
+			border: .1px solid #222;
+		}
+	</style>
 </head>
 <body>
 	<canvas width="800" height="600" id="game_map"></canvas>
 	<script src="Isoru/isoru.js"></script>
 	<script>
-		var GAME = new Isoru('game_map', {
-			dirt: 'heightMap0.png',
-			buildingWland: 132,
-			buildingHland: 127,
-			buildingDEEPland: 26,
-			tileW: 132,
-			tileH: 99,
-			tilesDistance: 64,
-			startCameraX: 100,
-			startCameraY: 0
+		var MAP = new Isoru('game_map', {
+			dirt: 'heightMap0.png', // тайл земли, который дублируется при высоте > 1
+			tileW: 132, // width
+			tileH: 99, // height
+			startCameraX: -100, // начальное положение камеры
+			tilesDistance: 74 // расстояние между клетками
 		});
 
-		var map = [
-			[0,0,8,1,2],
-			[0,0,9,10,4],
-			[0,0,8,0,4],
-			[3,6,11,6,5],
-			[7,7,10,0,0]
+		var tileMap = [
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] // карта
+			// 0 - tile 0
+			// 1 - tile 1
+			// n - tile n
 		];
 
 		var heightMap = [
-			[6,2,0,0,0],
-			[4,1,0,0,0],
-			[1,0,0,0,0],
-			[0,0,0,0,0],
-			[0,0,0,0,0]
+			[16,23,18,25,19,21,18,19,24,20,23,21,22,16,18,17,22,17,21,19,25,20,24],
+			[0,8,0,3,0,5,0,4,0,0,3,0,6,0,0,4,0,0,5,5,0,1,0] // карта высот
+			// 0 - высота 0
+			// 8 - высота 8
+			// n - высота n
 		];
 
-		GAME.initMap(map, [
-			"land.png", // 0
-			"buildings/building1.png", // 1
-			"water0_1.png", // 2
-			"water0_2.png", // 3
-			"water1_1.png", // 4
-			"water2_4.png", // 5
-			"water1_2.png", // 6
-
-			"road0_1.png", // 7
-			"road0_2.png", // 8
-			"road1_0.png", // 9
-			"road1_1.png", // 10
-			"road_bridge1.png" // 11
+		MAP.initMap(tileMap, [
+			"land.png", // tile 0
+			"water.png" // tile 1
 		], heightMap);
+
+		var playerX = 0;
+		var PLAYER = new IsoruPlayer("ralph.png", {
+			position: [1, playerX], // [y,x]
+			playerW: 66, // width
+			playerH: 49.5 // height
+		});
+
+		PLAYER.cameraFollow(); // добавляем слежение камеры
+		document.addEventListener("keypress", function(e){
+			var key = PLAYER.keypress(e);
+			if(key == "D" || key == "d" || key == "в" || key == "В"){
+				if(playerX+1 >= tileMap[0].length) return;
+				playerX++;
+				PLAYER.move([1,playerX]);
+			} else if(key == "A" || key == "a" || key == "ф" || key == "Ф"){
+				if(playerX-1 < 0) return;
+				playerX--;
+				PLAYER.move([1,playerX]);
+			}
+		});
 	</script>
 </body>
 </html>
